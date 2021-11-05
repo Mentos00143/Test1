@@ -1,0 +1,71 @@
+<?php
+/** @var $block \Magento\Framework\View\Element\Template */
+/**@var \Perspective\Test1\ViewModel\Product $viewModel*/
+
+$viewModel = $block->getData('view_model');
+
+?>
+<div>
+    <div><?php echo __('Product Info'); ?></div>
+    <div><?php echo __('Product ID: 1'); ?></div>
+    <div>
+        <?php echo __('Product qty: ') . $viewModel->getProductInfo()->getQty(); ?>
+    </div>
+    <div>
+        <?php echo __('Product min qty: ') . $viewModel->getProductInfo()->getMinQty(); ?>
+    </div>
+    <div>
+        <?php echo __('Product min sale qty: ') . $viewModel->getProductInfo()->getMinSaleQty(); ?>
+    </div>
+    <div>
+        <?php echo __('Product max sale qty: ') . $viewModel->getProductInfo()->getMaxSaleQty(); ?>
+    </div>
+    <?php
+    $isInStock = $viewModel->getProductInfo()->getIsInStock() ? 'Yes' : 'No';
+    ?>
+    <div>
+        <?php echo __('Is product in stock? ') . $isInStock; ?>
+    </div><br>
+    <div><?php echo __('Image Info'); ?></div>
+    <div><a href="<?php echo $viewModel->getImageInfo()->getUrl();?>" > Image Url </a></div>
+    <div><?php echo __('Image Height: ') . $viewModel->getImageInfo()->getHeight();?></div>
+    <div><?php echo __('Image Wight: ') . $viewModel->getImageInfo()->getWidth();?></div><br>
+    <div>
+        <?php $customerCollection = $viewModel->getCustomerCollection();?>
+        <div><?php echo __('Customers Info: '); ?></div>
+        <?php foreach ($customerCollection as $customer): ?>
+            <div><?php echo $customer->getEmail(); ?></div>
+        <?php endforeach; ?>
+    </div><br>
+    <div><?php echo __('Collection orders by closed state: ') ?></div>
+    <div>
+        <?php $orders = $viewModel->collectionOrders('state', ['eq'=>'closed']) ?>
+        <?php foreach ($orders as $order): ?>
+            <div><?php echo __("Customer email: ") . $order->getCustomerEmail(); ?></div>
+            <div><?php echo __("Customer firstname: ") . $order->getCustomerFirstname(); ?></div>
+            <div><?php echo __("Customer lastname: ") . $order->getCustomerLastname(); ?></div>
+        <?php endforeach; ?>
+    </div><br>
+    <div>
+    <div><?php echo __('Customer group IDs and codes: ') ?></div>
+    <?php $customerGroup = $viewModel->getCustomerGroup();?>
+    <?php foreach ($customerGroup as $customer): ?>
+        <div><?php echo $customer->getCustomerGroupId() . __('. ') . $customer->getCustomerGroupCode(); ?></div>
+    <?php endforeach; ?>
+    </div><br>
+    <div>
+        <div><?php echo __('Payments methods: ') ?></div>
+        <?php $payments = $viewModel->getAllPaymentMethods();?>
+        <?php foreach ($payments as $key => $data): ?>
+            <div><?php echo $key; ?></div>
+        <?php endforeach; ?>
+    </div><br>
+    <div>
+        <div><?php echo __('Shipping methods: ') ?></div>
+        <?php $allShipping = $viewModel->getAllShippingMethods();?>
+        <?php foreach($allShipping as $code => $shipping): ?>
+            <div><?php echo $code; ?></div>
+        <?php endforeach; ?>
+    </div><br>
+</div>
+
